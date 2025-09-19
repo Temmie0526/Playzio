@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "genre": "runner",
+  "assets": { "character": "hero", "background": "parallax", "bgm": "bgm_loop_1" },
+  "scenes": ["stage1"],
+  "params": {
+    "scrollSpeed": 120,
+    "spawn": { "gapMin": 80, "gapMax": 160, "spikeRate": 0.6, "platformRate": 0.4 },
+    "gravity": 900,
+    "jumpSpeed": 300
+  }
+}
