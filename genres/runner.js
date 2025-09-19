@@ -44,8 +44,6 @@ class RunnerScene extends BaseScene{
     this.spawnTimer = 0;
     this.gapMin = spawnCfg.gapMin ?? 80;
     this.gapMax = spawnCfg.gapMax ?? 160;
-    this.spikeRate = spawnCfg.spikeRate ?? 0.6;      // トゲ（当たるとアウト）
-    this.platformRate = spawnCfg.platformRate ?? 0.4; // 足場（乗れる）
 
     // スコア表示
     this.score = 0;
@@ -63,30 +61,15 @@ class RunnerScene extends BaseScene{
   }
 
   spawnObstacle(){
-    // トゲ or 足場をランダム生成
-    const isSpike = Math.random() < this.spikeRate;
-    if (isSpike){
-      const h = 24, w = 16;
-      const spike = this.add.triangle(this.W + w, this.groundY - h/2, 0, h, w, h, w/2, 0, 0xff5555);
-      this.physics.add.existing(spike);
-      spike.body.setAllowGravity(false);
-      spike.body.setVelocityX(-this.scrollSpeed);
-      spike.isSpike = true;
-      this.obstacles.add(spike);
-    } else {
-      const w = Phaser.Math.Between(60, 120), h = 12;
-      const y = this.groundY - Phaser.Math.Between(40, 90);
-      const plat = this.add.rectangle(this.W + w/2, y, w, h, 0x66ccff);
-      this.physics.add.existing(plat);
-      plat.body.setAllowGravity(false);
-      plat.body.setImmovable(true);
-      plat.body.setVelocityX(-this.scrollSpeed);
-      plat.isPlatform = true;
-      this.obstacles.add(plat);
-
-      // 足場は乗れるように衝突も追加
-      this.physics.add.collider(this.player, plat);
-    }
+    // まずは確実に見える「赤い長方形」だけ
+    const w = 20, h = 30;
+    const y = this.groundY - h/2;
+    const obs = this.add.rectangle(this.W + w, y, w, h, 0xff3333);
+    this.physics.add.existing(obs);
+    obs.body.setAllowGravity(false);
+    obs.body.setVelocityX(-this.scrollSpeed);
+    obs.isSpike = true;
+    this.obstacles.add(obs);
   }
 
   update(time, delta){
